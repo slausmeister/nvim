@@ -47,23 +47,11 @@ nmap <Leader>s :%s//g<Left><Left>
 " Leader key is like a command prefix. 
 let maplocalleader= "\<space>"
 
-" let g:python_host_prog="/usr/local/bin/python2.7"
-
 let g:session_autosave = 'yes'
 let g:session_autoload = 'yes'
 let g:session_default_to_last = 1
 
-
-" cd ~/.config/nvim/spell
-" wget http://ftp.vim.org/vim/runtime/spell/pt.utf-8.spl
-" set spell spelllang=pt_pt
-" zg to add word to word list
-" zw to reverse
-" zug to remove word from word list
-" z= to get list of possibilities
-" set spellfile=~/.config/nvim/
-" set nospell
-
+" Spellcheck
 setlocal spell
 noremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>plugtag
 set spelllang=de,en
@@ -79,10 +67,9 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Chiel92/vim-autoformat'
 Plug 'scrooloose/nerdtree'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-fugitive'
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 call plug#end()
 
 " Vim
@@ -137,7 +124,7 @@ if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+
 endif
 
-" nerdtree config
+" nerdtree con fig
 map <C-n> :NERDTreeToggle<CR>
 
 " airline settings
@@ -155,11 +142,18 @@ let g:airline_right_alt_sep = '|'
 let g:airline_powerline_fonts=1
 let g:airline_theme='molokai'
 
-" Multicursor
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_next_key='<C-e>'
-let g:multi_cursor_quit_key='<Esc>'
-let g:multi_cursor_quit_key='<Esc>'
-
 " Theme
 colorscheme gruvbox
+
+" Python
+let python_highlight_all=1
+let g:pymode=1
+let g:pymode_trim_whitespaces = 1
+let g:pymode_run = 1
+let g:pymode_run_bind = '<localleader>r'
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<localleader>b'
+let g:pymode_lint = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_lint_message = 1
+let g:pymode_preview_height = 5
