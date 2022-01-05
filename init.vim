@@ -126,6 +126,7 @@ endif
 
 " nerdtree con fig
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.aux$','\.fdb_latexmk$','\.fls$','\.log$','\.synctex.gz$']
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 2
@@ -148,12 +149,13 @@ colorscheme gruvbox
 " Python
 let python_highlight_all=1
 let g:pymode=1
-let g:pymode_trim_whitespaces = 1
 let g:pymode_run = 1
 let g:pymode_run_bind = '<localleader>r'
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<localleader>b'
-let g:pymode_lint = 1
-let g:pymode_lint_on_write = 1
-let g:pymode_lint_message = 1
 let g:pymode_preview_height = 5
+let g:pymode_lint_ignore = ["E231","E261","E262"]
+
+source ~/.config/nvim/termtoggle
+nnoremap <F7> :call MonkeyTerminalToggle()<cr>
+tnoremap <F7> <C-\><C-n>:call MonkeyTerminalToggle()<cr> 
