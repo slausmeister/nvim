@@ -2,3 +2,5 @@
 !init.vim
 !.gitignore
 !termtoggle
+!day.vim
+!night.vim
