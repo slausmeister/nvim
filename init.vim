@@ -1,4 +1,4 @@
-syntax on
+ syntax on
 set number
 set ruler               " Show the line and column numbers of the cursor.
 set formatoptions+=o    " Continue comment marker in new lines.
@@ -37,12 +37,16 @@ set gdefault            " Use 'g' flag by default with :s/foo/bar/.
 set magic               " Use 'magic' patterns (extended regular expressions).
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
+if maparg('<C-_>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 
 " Search and Replace
-nmap <Leader>s :%s//g<Left><Left>
+nmap <Leader>f :%s//g<Left><Left>
+
+" Copy and Paste
+vmap <leader>y :w! /tmp/vitmp<CR>                                                                   
+nmap <leader>p :r! cat /tmp/vitmp<CR>
 
 " Leader key is like a command prefix. 
 let maplocalleader= "\<space>"
@@ -60,16 +64,20 @@ inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 " Plugins here
 call plug#begin('~/.config/nvim/plugged')
 Plug 'ervandew/supertab'
+Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'lervag/vimtex'
 Plug 'Valloric/YouCompleteMe'
 Plug 'morhetz/gruvbox'
+Plug 'n1ghtmare/noirblaze-vim'
+Plug 'ingram1107/vim-zhi'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+Plug 'tibabit/vim-templates'
 call plug#end()
 
 " Vim
@@ -84,28 +92,6 @@ if !exists('g:ycm_semantic_triggers')
     let g:ycm_semantic_triggers = {}
 endif
 au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
-
-" This adds a callback hook that updates Skim after compilation        
-augroup vimtex_compilation
-    au!
-    au User VimtexEventCompileSuccess call UpdateSkim()
-augroup END
-
-function! UpdateSkim()
-    let l:out = b:vimtex.out()
-    let l:tex = expand('%:p')
-    let l:cmd = [g:vimtex_view_general_viewer, '-r']
-    if !empty(system('pgrep Skim'))
-    call extend(l:cmd, ['-g'])
-    endif
-    if has('nvim')
-    call jobstart(l:cmd + [line('.'), l:out, l:tex])
-    elseif has('job')
-    call job_start(l:cmd + [line('.'), l:out, l:tex])
-    else
-    call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
-    endif
-endfunction
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -124,9 +110,11 @@ if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+
 endif
 
-" nerdtree con fig
+" nerdtree config
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.aux$','\.fdb_latexmk$','\.fls$','\.log$','\.synctex.gz$']
+let g:NERDTreeWinSize=25
+let NERDTreeQuitOnOpen = 1
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 2
@@ -144,6 +132,7 @@ let g:airline_powerline_fonts=1
 let g:airline_theme='molokai'
 
 " Theme
+" colorscheme zhi
 colorscheme gruvbox
 
 " Python
@@ -156,6 +145,15 @@ let g:pymode_breakpoint_bind = '<localleader>b'
 let g:pymode_preview_height = 5
 let g:pymode_lint_ignore = ["E231","E261","E262"]
 
+" Termtoggle
 source ~/.config/nvim/termtoggle
 nnoremap <F7> :call MonkeyTerminalToggle()<cr>
 tnoremap <F7> <C-\><C-n>:call MonkeyTerminalToggle()<cr> 
+
+" Wrapped scrolling with mouse
+map <up> gk
+map <down> gj
+nmap <up> gk
+nmap <up> gk
+vmap <down> gj
+vmap <down> gj
